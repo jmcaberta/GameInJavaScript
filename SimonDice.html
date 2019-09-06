@@ -100,7 +100,7 @@
         const naranja = document.getElementById('naranja')
         const verde = document.getElementById('verde')
         const btnEmpezar = document.getElementById('btnEmpezar')
-        const LAST_LEVEL = 10
+        const LAST_LEVEL = 15
 
         class Game {
             constructor() {
@@ -127,7 +127,7 @@
             }
 
             nextLevel() {
-                this.sublevel = 0
+                this.sublevel = 0                
                 this.iluminarSecuencia()
                 this.agregarEventosClick()
             }
@@ -167,9 +167,7 @@
             iluminarSecuencia() {
                 for (let i = 0; i < this.level; i++) {
                     const color = this.numToColor(this.secuencia[i])
-                    setTimeout(() => {                        
-                        this.iluminarColor(color)
-                    }, 1000 * i)                    
+                    setTimeout(() => this.iluminarColor(color), 1500 * i)                    
                 }
             }           
 
@@ -205,7 +203,7 @@
                     if (this.sublevel === this.level) {
                         this.level++
                         this.eliminarEventosClick()
-                        if (this.level === (LAST_LEVEL +1)) {
+                        if (this.level === (LAST_LEVEL + 1)) {
                             //Gano
                         } else {
                             setTimeout(this.nextLevel, 2000)
