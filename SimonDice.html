@@ -84,6 +84,9 @@
         .hide {
             display: none;
         }
+        * {
+            font-family: 'New Times Roman';
+        }
     </style>
 </head>
 <body>
@@ -94,31 +97,40 @@
         <div id="verde" class="color verde right" data-color="verde"></div>
         <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Start the game</button>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
         const celeste = document.getElementById('celeste')
         const violeta = document.getElementById('violeta')
         const naranja = document.getElementById('naranja')
         const verde = document.getElementById('verde')
         const btnEmpezar = document.getElementById('btnEmpezar')
-        const LAST_LEVEL = 15
+        const LAST_LEVEL = 10        
 
         class Game {
             constructor() {
                 this.inicializar()
-                this.generarSecuencia()
-                this.nextLevel()
+                this.generarSecuencia()               
+                setTimeout( this.nextLevel(), 500)
             }
 
             inicializar() {
                 this.nextLevel = this.nextLevel.bind(this)
                 this.elegirColor = this.elegirColor.bind(this)
-                btnEmpezar.classList.add('hide')
+                this.toggleBtnEmpezar()                
                 this.level = 1                
                 this.colores = {
                     celeste, 
                     violeta,
                     naranja,
                     verde
+                }
+            }
+
+            toggleBtnEmpezar() {
+                if(btnEmpezar.classList.contains('hide')) {
+                    btnEmpezar.classList.remove('hide')
+                }else {
+                    btnEmpezar.classList.add('hide')
                 }
             }
 
@@ -132,7 +144,7 @@
                 this.agregarEventosClick()
             }
 
-            numToColor(number){
+            colorToNum(number) {
                switch (number) {
                     case 'celeste': 
                     return 0 
@@ -148,7 +160,7 @@
                }
             }
 
-            colorToNum(color){
+            numToColor(color) {
                switch (color) {
                     case 0: 
                     return 'celeste';
@@ -204,14 +216,29 @@
                         this.level++
                         this.eliminarEventosClick()
                         if (this.level === (LAST_LEVEL + 1)) {
-                            //Gano
+                            this.youWin()
                         } else {
                             setTimeout(this.nextLevel, 2000)
                         }
                     }
                 } else {
-                    // Perdio
+                    this.youLost()
                 }
+            }
+
+            youWin() {
+                swal('Congratulations', 'You Win!!!!', 'success')
+                    .then(() => {                        
+                        this.inicializar()
+                    })
+            }
+
+            youLost() {
+                swal('Ooooooooohhh!!!', 'You are a Loser!!!!', 'error')
+                    .then(() => {
+                        this.eliminarEventosClick()                        
+                        this.inicializar()
+                    })
             }
         }
 
